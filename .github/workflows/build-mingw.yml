@@ -25,8 +25,9 @@ jobs:
       - name: Install MSYS2
         uses: msys2/setup-msys2@v2
         with:
+          update: true
           msystem: MINGW64
-          install: make autoconf automake libtool autogen perl
+          install: git make autoconf automake libtool autogen perl
           
       - name: curl x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         shell: cmd
