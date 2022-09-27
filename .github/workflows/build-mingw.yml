@@ -27,7 +27,7 @@ jobs:
         with:
           update: true
           msystem: MINGW64
-          install: git make autoconf2.69 automake libtool autogen perl
+          install: git make autoconf2.69 automake1.16 libtool autogen perl
           
       - name: curl x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         shell: cmd
