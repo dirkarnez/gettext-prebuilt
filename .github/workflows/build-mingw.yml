@@ -37,19 +37,23 @@ jobs:
         shell: msys2 {0}
         run: |
             export PATH="${{ github.workspace }}/mingw64:${{ github.workspace }}/mingw64/bin:${{ github.workspace }}/msys64/usr/bin:/usr/bin" &&
-            cd gettext && g++ --version && ./autogen.sh && ./configure mingw64 -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
-            make && make install
+            cd gettext && 
+            g++ --version && 
+            ./autopull.sh &&
+            ./autogen.sh
+            # ./configure mingw64 -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
+            # make && make install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          directory: "${{ github.workspace }}/gettext/${{ env.installationPath }}"
+          directory: "${{ github.workspace }}/gettext"
           filename: "${{ env.mingwTargetZip }}"
         
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ github.workspace }}/gettext/${{ env.installationPath }}/${{ env.mingwTargetZip }}"
+          artifacts: "${{ github.workspace }}/gettext/${{ env.mingwTargetZip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
