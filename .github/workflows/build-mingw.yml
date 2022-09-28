@@ -37,13 +37,14 @@ jobs:
         shell: msys2 {0}
         run: |
             export PATH="${{ github.workspace }}/mingw64:${{ github.workspace }}/mingw64/bin:${{ github.workspace }}/msys64/usr/bin:/usr/bin" &&
-            cd gettext && 
             g++ --version && 
+            cd gettext && 
             ./autopull.sh &&
             ./autogen.sh &&
             ./configure
-            # ./configure mingw64 -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
-            # make && make install
+            
+    # ./configure mingw64 -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
+    # make && make install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
