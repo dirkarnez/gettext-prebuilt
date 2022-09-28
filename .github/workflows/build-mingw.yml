@@ -39,6 +39,7 @@ jobs:
             export PATH="${{ github.workspace }}/mingw64:${{ github.workspace }}/mingw64/bin:${{ github.workspace }}/msys64/usr/bin:/usr/bin" &&
             g++ --version && 
             cd gettext && 
+            ls &&
             ./autopull.sh &&
             ./autogen.sh &&
             ./configure
