@@ -13,7 +13,7 @@ jobs:
     env:
       libraryName: gettext
       installationPath: gettext-installation
-      tagName: v0.20.2 # target tag
+      tagName: v0.21 # target tag
       mingwTargetZip: gettext-${{ github.ref_name }}-x86_64-posix-seh-rev0-8.1.0.zip
     steps:
       - uses: actions/checkout@v3
@@ -40,7 +40,8 @@ jobs:
             cd gettext && 
             g++ --version && 
             ./autopull.sh &&
-            ./autogen.sh
+            ./autogen.sh &&
+            ./configure
             # ./configure mingw64 -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
             # make && make install
             
