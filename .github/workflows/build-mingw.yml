@@ -46,9 +46,6 @@ jobs:
             ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
             make && make install
             
-    # ./configure mingw64 -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
-    # make && make install
-            
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
