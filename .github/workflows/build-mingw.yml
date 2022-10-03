@@ -40,6 +40,7 @@ jobs:
             g++ --version && 
             cd gettext && 
             ls &&
+            sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
             ./autogen.sh &&
             ./gitsub.sh pull &&
             ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
