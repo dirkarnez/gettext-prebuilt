@@ -40,7 +40,8 @@ jobs:
             g++ --version && 
             cd gettext && 
             ls &&
-            ./autogen.sh pull &&
+            ./autogen.sh &&
+            ./gitsub.sh pull &&
             ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
             make && make install
             
