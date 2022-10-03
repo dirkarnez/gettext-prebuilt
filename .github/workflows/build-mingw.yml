@@ -39,8 +39,10 @@ jobs:
             export PATH="${{ github.workspace }}/mingw64:${{ github.workspace }}/mingw64/bin:${{ github.workspace }}/msys64/usr/bin:/usr/bin" &&
             g++ --version && 
             cd gettext && 
-            ls &&
             sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
+            cd gettext-tools &&
+            sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
+            cd .. &&
             ./autogen.sh &&
             ./gitsub.sh pull &&
             ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
