@@ -40,14 +40,9 @@ jobs:
             export PATH="$workspace/mingw64:$workspace/mingw64/bin:$workspace/msys64/usr/bin:/usr/bin:$workspace/cmake-3.24.0-windows-x86_64/bin" &&
             gcc --version &&
             cd gettext && 
-            # sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
-            # cd gettext-tools &&
-            # sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
-            # cd .. &&
             ./autogen.sh &&
             ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
-                   # ./gitsub.sh pull
-        #  make && make install
+            make && make install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
