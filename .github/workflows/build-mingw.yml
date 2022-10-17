@@ -41,7 +41,8 @@ jobs:
             gcc --version &&
             cd gettext && 
             ./autogen.sh &&
-            ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
+            ./configure --help &&
+            ./configure --prefix="$(pwd)/${{ env.installationPath }}" &&
             make && make install
             
       - name: Archive Release
