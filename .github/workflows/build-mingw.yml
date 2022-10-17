@@ -13,7 +13,7 @@ jobs:
     env:
       libraryName: gettext
       installationPath: gettext-installation
-      tagName: v0.21 # target tag
+      tagName: v0.21.1 # target tag
       mingwTargetZip: gettext-${{ github.ref_name }}-x86_64-posix-seh-rev0-8.1.0.zip
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
         with:
           update: true
           msystem: MINGW64
-          install: git make autoconf2.69 automake1.16 libtool autogen perl
+          install: git make autoconf2.69 automake1.16 libtool autogen perl bison flex
           
       - name: curl x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         shell: cmd
@@ -36,15 +36,16 @@ jobs:
       - name: set PATH, check mingw version, cmake generate, build and install
         shell: msys2 {0}
         run: |
-            export PATH="${{ github.workspace }}/mingw64:${{ github.workspace }}/mingw64/bin:${{ github.workspace }}/msys64/usr/bin:/usr/bin" &&
-            g++ --version && 
+            workspace=$(pwd) &&
+            export PATH="$workspace/mingw64:$workspace/mingw64/bin:$workspace/msys64/usr/bin:/usr/bin:$workspace/cmake-3.24.0-windows-x86_64/bin" &&
+            gcc --version &&
             cd gettext && 
             sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
             cd gettext-tools &&
             sed -i 's/AC_PREREQ(\[2.63\])/AC_PREREQ(\[2.64\])/g' ./configure.ac &&
             cd .. &&
-            ./autogen.sh &&
-            ./gitsub.sh pull
+            ./autopull.sh && ./autogen.sh
+           # ./gitsub.sh pull
             
          # ./configure -static --enable-relocatable --prefix="$(pwd)/${{ env.installationPath }}" &&
         #  make && make install
