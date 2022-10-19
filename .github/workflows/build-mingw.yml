@@ -41,9 +41,10 @@ jobs:
             gcc --version &&
             cd gettext && 
             ./autogen.sh &&
-            ./configure --help &&
-            ./configure --prefix="$(pwd)/${{ env.installationPath }}" &&
-            make VERBOSE=1 && make install
+            ./configure --help 
+            
+            # ./configure --prefix="$(pwd)/${{ env.installationPath }}" &&
+            # make VERBOSE=1 && make install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
