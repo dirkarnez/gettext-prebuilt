@@ -27,7 +27,7 @@ jobs:
         with:
           update: true
           msystem: MINGW64
-          install: git make autoconf automake libtool autogen perl bison flex patch gperf
+          install: git make autoconf automake libtool autogen perl bison flex patch gperf python
           
       - name: curl x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         shell: cmd
