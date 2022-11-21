@@ -49,6 +49,7 @@ jobs:
             gcc --version &&
             tar -xvf gettext-0.21.1.tar.gz &&
             cd gettext-0.21.1 &&
+            ./configure --help &&
             ./configure --host=x86_64-w64-mingw32 \
             CC=x86_64-w64-mingw32-gcc \
             CXX=x86_64-w64-mingw32-g++ \
