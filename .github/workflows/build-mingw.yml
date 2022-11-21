@@ -16,11 +16,17 @@ jobs:
       tagName: v0.21.1 # target tag
       mingwTargetZip: gettext-${{ github.ref_name }}-x86_64-posix-seh-rev0-8.1.0.zip
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: download distribution
+        shell: cmd
+        run: | 
+          curl https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.1.tar.gz -L --output gettext-0.21.1.tar.gz
+          
       - name: git clone
         shell: cmd
-        run: git clone --recursive https://git.savannah.gnu.org/git/gettext.git && cd gettext && git checkout ${{ env.tagName }}
+        run: | 
+          git clone --recursive https://git.savannah.gnu.org/git/gnulib.git &&^
+          cd gnulib &&^
+          git checkout v0.1
       
       - name: Install MSYS2
         uses: msys2/setup-msys2@v2
@@ -31,30 +37,41 @@ jobs:
           
       - name: curl x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         shell: cmd
-        run:  cd /d ${{ github.workspace }} && curl https://github.com/2641797006/c/blob/master/GCC-zip/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z?raw=true -L --output x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z && dir && 7z.exe x x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
+        run: |
+          curl https://github.com/2641797006/c/blob/master/GCC-zip/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z?raw=true -L --output x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z && dir && 7z.exe x x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         
       - name: set PATH, check mingw version, cmake generate, build and install
         shell: msys2 {0}
         run: |
             workspace=$(pwd) &&
             export PATH="$workspace/mingw64:$workspace/mingw64/bin:$workspace/msys64/usr/bin:/usr/bin:$workspace/cmake-3.24.0-windows-x86_64/bin" &&
+            export GNULIB_SRCDIR="$workspace/gnulib" &&
             gcc --version &&
-            cd gettext && 
-            ./autogen.sh &&
-            ./configure --help 
-            ./configure --disable-java --enable-static --enable-shared --disable-rpath --enable-relocatable --disable-openmp --prefix="$(pwd)/${{ env.installationPath }}" &&
+            tar -xvf gettext-0.21.1.tar.gz &&
+            cd gettext-0.21.1 &&
+            ./configure --host=x86_64-w64-mingw32 \
+            CC=x86_64-w64-mingw32-gcc \
+            CXX=x86_64-w64-mingw32-g++ \
+            CPPFLAGS="-I/mingw64/include -Wall" \
+            LDFLAGS="-L/mingw64/lib" \
+            --disable-java \
+            --enable-static \
+            --enable-shared  \
+            --disable-rpath \
+            --enable-relocatable \
+            --prefix="$(pwd)/${{ env.installationPath }}" &&
             make VERBOSE=1 && make install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          directory: "${{ github.workspace }}/gettext"
+          directory: "${{ github.workspace }}/gettext-0.21.1"
           filename: "${{ env.mingwTargetZip }}"
         
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ github.workspace }}/gettext/${{ env.mingwTargetZip }}"
+          artifacts: "${{ github.workspace }}/gettext-0.21.1/${{ env.mingwTargetZip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
