@@ -33,7 +33,7 @@ jobs:
         with:
           update: true
           msystem: MINGW64
-          install: git autoconf automake libtool autogen perl bison flex patch gperf python
+          install: git autoconf automake libtool autogen perl bison flex patch gperf python wget xz
           
       - name: curl x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
         shell: cmd
@@ -46,9 +46,11 @@ jobs:
             workspace=$(pwd) &&
             export PATH="$workspace/mingw64:$workspace/mingw64/bin:$workspace/msys64/usr/bin:/usr/bin:$workspace/cmake-3.24.0-windows-x86_64/bin" &&
             export GNULIB_SRCDIR="$workspace/gnulib" &&
+            export MAKE="mingw32-make.exe" &&
             gcc --version &&
             tar -xvf gettext-0.21.1.tar.gz &&
             cd gettext-0.21.1 && \
+            ./autogen.sh &&
             ./configure \
             --disable-java \
             --enable-static \
@@ -57,7 +59,6 @@ jobs:
             --enable-relocatable \
             --without-libiconv-prefix \
             --prefix="$(pwd)/${{ env.installationPath }}" && \
-            export MAKE="mingw32-make.exe" && \
             $(MAKE) VERBOSE=1 && $(MAKE) install
             
       - name: Archive Release
