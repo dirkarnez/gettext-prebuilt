@@ -50,12 +50,13 @@ jobs:
             tar -xvf gettext-0.21.1.tar.gz &&
             cd gettext-0.21.1 &&
             ./configure --help &&
-            ./configure --build=x86_64-w64-mingw32 --host=x86_64-w64-mingw32 \
+            ./configure \
             --disable-java \
             --enable-static \
             --enable-shared  \
             --disable-rpath \
             --enable-relocatable \
+            --without-libiconv-prefix \
             --prefix="$(pwd)/${{ env.installationPath }}" &&
             mingw32-make.exe VERBOSE=1 && mingw32-make.exe install
             
