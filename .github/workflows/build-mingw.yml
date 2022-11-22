@@ -48,8 +48,7 @@ jobs:
             export GNULIB_SRCDIR="$workspace/gnulib" &&
             gcc --version &&
             tar -xvf gettext-0.21.1.tar.gz &&
-            cd gettext-0.21.1 &&
-            ./configure --help &&
+            cd gettext-0.21.1 && \
             ./configure \
             --disable-java \
             --enable-static \
@@ -57,8 +56,9 @@ jobs:
             --disable-rpath \
             --enable-relocatable \
             --without-libiconv-prefix \
-            --prefix="$(pwd)/${{ env.installationPath }}" &&
-            mingw32-make.exe VERBOSE=1 && mingw32-make.exe install
+            --prefix="$(pwd)/${{ env.installationPath }}" && \
+            export MAKE="mingw32-make.exe" && \
+            $(MAKE) VERBOSE=1 && $(MAKE) install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
