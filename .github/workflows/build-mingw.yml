@@ -59,7 +59,7 @@ jobs:
             --enable-relocatable \
             --without-libiconv-prefix \
             --prefix="$(pwd)/${{ env.installationPath }}" && \
-            $(MAKE) VERBOSE=1 && $(MAKE) install
+            $MAKE VERBOSE=1 && $MAKE install
             
       - name: Archive Release
         uses: thedoctor0/zip-release@master
