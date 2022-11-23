@@ -50,7 +50,7 @@ jobs:
             gcc --version &&
             tar -xvf gettext-0.21.1.tar.gz &&
             cd gettext-0.21.1 && \
-            ./autogen.sh --skip-gnulib &&
+            ./autogen.sh && \
             ./configure \
             --disable-java \
             --enable-static \
